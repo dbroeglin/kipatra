@@ -1,7 +1,31 @@
 #!/usr/bin/env ruby
 
 require 'kipatra'
+require 'optparse'
 
-server = Kipatra::Server.new(ARGV.shift)
+options = {}
+option_parser = OptionParser.new do |opts|
+
+  opts.on("-u UDP","--udp UDP") do |udp|
+    options[:udp] = udp
+  end
+
+  opts.on("-t TCP","--tcp TCP") do |tcp|
+    options[:tcp] = tcp
+  end
+end
+option_parser.parse!
+
+puts options.inspect
+
+dir_or_file = ARGV.shift
+
+if File.directory? dir_or_file
+  opts = {:war => dir_or_file}
+else
+  opts = {:app_file => dir_or_file}
+end
+
+server = Kipatra::Server.new(opts)
 server.start
 server.join

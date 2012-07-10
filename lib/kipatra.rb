@@ -4,8 +4,11 @@ module Kipatra
   class Server
     include Cipango
 
-    def initialize(app_base)
-      @app_base = app_base
+    def initialize(opts)
+      @war, @app_file = opts[:war], opts[:app_file]
+      unless @war || @app_file
+        raise ArgumentError, "Either :war or :app_file must be defined"
+      end
     end
 
     def start
@@ -14,12 +17,9 @@ module Kipatra
 
       @server.connector_manager.connectors = [udp]
 
-      app_context = SipAppContext.new
-      app_context.context_path = '/'
-      app_context.war = @app_base
 
       handler = SipContextHandlerCollection.new
-      handler.add_handler app_context
+      handler.add_handler sip_app
 
       @server.application_router = DefaultApplicationRouter.new
       @server.handler = handler
@@ -29,6 +29,24 @@ module Kipatra
 
     def join
       @server.join
+    end
+
+    private
+
+    def sip_app
+      ctxt = nil
+      if @war
+        ctxt = SipAppContext.new
+        ctxt.context_path = '/'
+        ctxt.war = @war
+      else
+        ctxt = SipAppContext.new('/', '/')
+        proc = Proc.new {}
+        servlet = eval(File.read(@app_file), proc.binding, @app_file)
+        ctxt.add_sip_servlet SipServletHolder::new(servlet)
+      end
+
+      ctxt
     end
   end
 end
