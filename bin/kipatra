@@ -1,3 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'kipatra'
+
+server = Kipatra::Server.new(ARGV.shift)
+server.start
+server.join

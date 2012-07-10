@@ -20,5 +20,4 @@ Gem::Specification.new do |spec|
     spec.rubygems_version = '1.3.6'
 
     spec.add_development_dependency "rspec", ">= 2.0.0"
-    spec.add_development_dependency "gem-release"
 end
