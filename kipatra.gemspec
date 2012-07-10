@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
     spec.require_path     = "lib"
     spec.homepage         = 'http://github.com/dbroeglin/kipatra'
     spec.has_rdoc         = false
-    spec.rubygems_version = '1.3.6'
+    spec.rubygems_version = '>= 1.3.6'
 
     spec.add_development_dependency "rspec", ">= 2.0.0"
 end
