@@ -1,4 +1,4 @@
 kipatra
 =======
 
-Experiment with a standaline sipatra server
+Experiment with a standalone Sipatra server.
