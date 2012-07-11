@@ -11,12 +11,10 @@ module Kipatra
       end
     end
 
-    def start
+    def start(options = nil)
       @server = Cipango::Server.new
-      udp = UdpConnector.new
 
-      @server.connector_manager.connectors = [udp]
-
+      @server.connector_manager.connectors = manage_connectors(options)
 
       handler = SipContextHandlerCollection.new
       handler.add_handler sip_app
@@ -32,6 +30,23 @@ module Kipatra
     end
 
     private
+
+    def manage_connectors(connectors)
+      conns = []
+
+      connectors[:udp].each do |args|
+        conn = UdpConnector.new
+        conn.host, conn.port = args[:host], args[:port]
+        conns << conn
+      end
+      connectors[:tcp].each do |args|
+        conn = TcpConnector.new
+        conn.host, conn.port = args[:host], args[:port]
+        conns << conn
+      end
+
+      conns
+    end
 
     def sip_app
       ctxt = nil
