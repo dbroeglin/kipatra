@@ -59,7 +59,7 @@ module Kipatra
       elsif @sipatra
         ctxt = SipAppContext.new('/', '/')
         proc = Proc.new {}
-        servlet = eval(File.read('lib/sipatra_app.rb'), proc.binding, 'lib/sipatra_app.rb')
+        servlet = eval(File.read(File.expand_path(File.join(File.dirname(__FILE__), '../lib/sipatra_app.rb'))), proc.binding, 'lib/sipatra_app.rb')
         ctxt.add_sip_servlet SipServletHolder::new(servlet)
       else
         ctxt = SipAppContext.new('/', '/')
