@@ -5,16 +5,17 @@ module Kipatra
     include Cipango
 
     def initialize(opts)
-      @war, @app_file = opts[:war], opts[:app_file]
+      @war, @app_file, @sipatra, @tcp, @udp = opts[:war], opts[:app_file], opts[:sipatra], opts[:tcp], opts[:udp]
+      # useless
       unless @war || @app_file
         raise ArgumentError, "Either :war or :app_file must be defined"
       end
     end
 
-    def start(options = nil)
+    def start
       @server = Cipango::Server.new
 
-      @server.connector_manager.connectors = manage_connectors(options)
+      @server.connector_manager.connectors = manage_connectors
 
       handler = SipContextHandlerCollection.new
       handler.add_handler sip_app
@@ -31,15 +32,16 @@ module Kipatra
 
     private
 
-    def manage_connectors(connectors)
+    def manage_connectors
       conns = []
 
-      connectors[:udp].each do |args|
+      @udp.each do |args|
         conn = UdpConnector.new
         conn.host, conn.port = args[:host], args[:port]
         conns << conn
       end
-      connectors[:tcp].each do |args|
+
+      @tcp.each do |args|
         conn = TcpConnector.new
         conn.host, conn.port = args[:host], args[:port]
         conns << conn
@@ -54,6 +56,11 @@ module Kipatra
         ctxt = SipAppContext.new
         ctxt.context_path = '/'
         ctxt.war = @war
+      elsif @sipatra
+        ctxt = SipAppContext.new('/', '/')
+        proc = Proc.new {}
+        servlet = eval(File.read('lib/sipatra_app.rb'), proc.binding, 'lib/sipatra_app.rb')
+        ctxt.add_sip_servlet SipServletHolder::new(servlet)
       else
         ctxt = SipAppContext.new('/', '/')
         proc = Proc.new {}

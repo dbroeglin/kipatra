@@ -3,7 +3,7 @@
 require 'kipatra'
 require 'optparse'
 
-options = {:udp => [], :tcp => []}
+options = {:udp => [], :tcp => [], :sipatra => false}
 option_parser = OptionParser.new do |opts|
 
   opts.on("-u UDP","--udp UDP") do |udp|
@@ -17,6 +17,10 @@ option_parser = OptionParser.new do |opts|
     port = port.nil? ? 5060 : port.to_i
     options[:tcp] << {:host => host, :port => port}
   end
+
+  opts.on("-s", "--sipatra") do
+    options[:sipatra] = true
+  end
 end
 option_parser.parse!
 
@@ -25,14 +29,14 @@ option_parser.parse!
 
 dir_or_file = ARGV.shift
 
-raise "No application to start" if dir_or_file.nil?
+raise "No application to start." if dir_or_file.nil?
 
 if(File.directory?(dir_or_file) || dir_or_file[-4..-1] == '.war') 
-  opts = {:war => dir_or_file}
+  options[:war] = dir_or_file
 else
-  opts = {:app_file => dir_or_file}
+  options[:app_file] = dir_or_file
 end
 
-server = Kipatra::Server.new(opts)
-server.start(options)
+server = Kipatra::Server.new(options)
+server.start
 server.join
