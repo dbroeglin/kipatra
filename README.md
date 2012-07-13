@@ -12,19 +12,19 @@ TODO
 TEST APPLICATION
 ================
 
-In first shell:
+Launch a cipango server with a simple sipatra application as servlet to work sip proxy :
 
-jruby -Ilib -rubygems bin/kipatra -u 127.0.0.2:5060 sample.rb
-
-
-In second shell:
-
-./sipp -sn uas -bind_local -i 127.0.0.3
+bin/kipatra -u 127.0.0.2:5060 -s sample.rb
 
 
-In third shell:
+Launch a sipp server :
 
-./sipp -sn uac -s 127.0.0.1 -i 127.0.0.1 -rsa 127.0.0.2 127.0.0.3
+sipp -sn uas -bind_local -i 127.0.0.3
+
+
+Launch a sipp client to communicate with sipp server through cipango proxy
+
+sipp -sn uac -s 127.0.0.1 -i 127.0.0.1 -rsa 127.0.0.2 127.0.0.3
 
 
 On mac, don't forget to execute:

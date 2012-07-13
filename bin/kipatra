@@ -1,5 +1,8 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env jruby
 
+$:.unshift(File.dirname(__FILE__)+'/../lib')
+
+require 'rubygems'
 require 'kipatra'
 require 'optparse'
 
