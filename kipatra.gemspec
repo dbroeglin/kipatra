@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
     spec.name             = "kipatra"
-    spec.version          = "0.1.0"
+    spec.version          = "0.1.1"
     spec.authors          = [ "Dominique Broeglin" ]
     spec.description      = 'Cipango powered Sipatra server'
     spec.summary          = 'Sipatra server powered by Cipango'
