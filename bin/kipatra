@@ -6,7 +6,7 @@ require 'rubygems'
 require 'kipatra'
 require 'optparse'
 
-options = {:udp => [], :tcp => [], :sipatra => false}
+options = {:udp => [], :tcp => [], :sipatra => false, :example => false}
 option_parser = OptionParser.new do |opts|
 
   opts.on("-u UDP","--udp UDP") do |udp|
@@ -24,6 +24,12 @@ option_parser = OptionParser.new do |opts|
   opts.on("-s", "--sipatra") do
     options[:sipatra] = true
   end
+
+  opts.on("-e EXAMPLE", "--example EXAMPLE") do |ex|
+    Dir.chdir File.join(File.dirname(__FILE__), '../examples/', ex)
+    options[:sipatra] = true
+    options[:example] = true
+  end
 end
 option_parser.parse!
 
@@ -31,6 +37,9 @@ option_parser.parse!
 #puts options.inspect
 
 dir_or_file = ARGV.shift
+if options[:example]
+  dir_or_file = 'sample.rb'
+end
 
 raise "No application to start." if dir_or_file.nil?
 

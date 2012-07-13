@@ -35,6 +35,10 @@ module Kipatra
     def manage_connectors
       conns = []
 
+      if @udp.empty? and @tcp.empty?
+        @udp = [{:host => '0.0.0.0', :port => 5060}]
+      end
+
       @udp.each do |args|
         conn = UdpConnector.new
         conn.host, conn.port = args[:host], args[:port]
