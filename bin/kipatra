@@ -21,13 +21,12 @@ option_parser = OptionParser.new do |opts|
     options[:tcp] << {:host => host, :port => port}
   end
 
-  opts.on("-s", "--sipatra") do
-    options[:sipatra] = true
+  opts.on("-w", "--war") do
+    options[:war] = true
   end
 
   opts.on("-e EXAMPLE", "--example EXAMPLE") do |ex|
     Dir.chdir File.join(File.dirname(__FILE__), '../examples/', ex)
-    options[:sipatra] = true
     options[:example] = true
   end
 end
@@ -43,7 +42,7 @@ end
 
 raise "No application to start." if dir_or_file.nil?
 
-if(File.directory?(dir_or_file) || dir_or_file[-4..-1] == '.war') 
+if options[:war]
   options[:war] = dir_or_file
 else
   options[:app_file] = dir_or_file

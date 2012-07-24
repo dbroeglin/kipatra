@@ -1,12 +1,12 @@
 require 'kipatra/cipango'
+require 'kipatra/sipatra'
 
 module Kipatra
   class Server
     include Cipango
 
     def initialize(opts)
-      @war, @app_file, @sipatra, @tcp, @udp = opts[:war], opts[:app_file], opts[:sipatra], opts[:tcp], opts[:udp]
-      # useless
+      @war, @app_file, @tcp, @udp = opts[:war], opts[:app_file], opts[:tcp], opts[:udp]
       unless @war || @app_file
         raise ArgumentError, "Either :war or :app_file must be defined"
       end
@@ -60,16 +60,15 @@ module Kipatra
         ctxt = SipAppContext.new
         ctxt.context_path = '/'
         ctxt.war = @war
-      elsif @sipatra
-        ctxt = SipAppContext.new('/', '/')
-        proc = Proc.new {}
-        servlet = eval(File.read(File.expand_path(File.join(File.dirname(__FILE__), '../lib/sipatra_app.rb'))), proc.binding, 'lib/sipatra_app.rb')
-        ctxt.add_sip_servlet SipServletHolder::new(servlet)
       else
-        ctxt = SipAppContext.new('/', '/')
+        ctxt = SipAppContext.new('/', '.')
         proc = Proc.new {}
-        servlet = eval(File.read(@app_file), proc.binding, @app_file)
-        ctxt.add_sip_servlet SipServletHolder::new(servlet)
+        begin
+          load @app_file
+        rescue Exception => e
+          raise "Sipatra Load Error : #{e.inspect}\n#{e.backtrace.join("\n")}"
+        end
+        ctxt.add_sip_servlet SipServletHolder.new(SipatraServlet.new)
       end
 
       ctxt
