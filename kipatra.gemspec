@@ -1,10 +1,14 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "kipatra/version"
+
 Gem::Specification.new do |spec|
     spec.name             = "kipatra"
-    spec.version          = "0.1.1"
-    spec.authors          = [ "Dominique Broeglin" ]
+    spec.version          = Kipatra::VERSION
+    spec.authors          = [ "Dominique Broeglin", "Alexandre Moutot" ]
     spec.description      = 'Cipango powered Sipatra server'
     spec.summary          = 'Sipatra server powered by Cipango'
-    spec.email            = 'dominique.broeglin@gmail.com'
+    spec.email            = ['dominique.broeglin@gmail.com', 'alexscottt@gmail.com']
     spec.executables      = [ "kipatra" ]
 
     spec.files            = `git ls-files -- lib/*`.split("\n")
