@@ -1,16 +1,5 @@
 require 'sipatra'
 require 'logger'
-#require 'sipatra/log4j-1.2.17.jar'
-#include_class 'org.apache.log4j.Logger'
-#
-#if File.exists?('log4j.properties')
-#  include_class 'org.apache.log4j.PropertyConfigurator'
-#  PropertyConfigurator.configure(File.join(File.expand_path(Dir.pwd), 'log4j.properties'))
-#else
-#  include_class 'org.apache.log4j.BasicConfigurator'
-#  BasicConfigurator.configure
-#end
-
 
 module Kipatra
   class SipatraServlet < Kipatra::Cipango::SipServlet
