@@ -23,5 +23,6 @@ Gem::Specification.new do |spec|
     spec.has_rdoc         = false
     spec.rubygems_version = '>= 1.3.6'
 
+    spec.add_development_dependency "sipatra", ">= 0.1.0"
     spec.add_development_dependency "rspec", ">= 2.0.0"
 end
