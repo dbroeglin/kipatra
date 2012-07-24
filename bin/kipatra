@@ -25,9 +25,8 @@ option_parser = OptionParser.new do |opts|
     options[:war] = true
   end
 
-  opts.on("-e EXAMPLE", "--example EXAMPLE") do |ex|
-    Dir.chdir File.join(File.dirname(__FILE__), '../examples/', ex)
-    options[:example] = true
+  opts.on("-e EXAMPLE", "--example EXAMPLE") do |example_name|
+    options[:example] = example_name
   end
 end
 option_parser.parse!
@@ -37,10 +36,10 @@ option_parser.parse!
 
 dir_or_file = ARGV.shift
 if options[:example]
-  dir_or_file = 'sample.rb'
+  dir_or_file = File.join(File.dirname(__FILE__), '../examples', options[:example], 'sample.rb')
 end
 
-raise "No application to start." if dir_or_file.nil?
+raise "No application (or WAR) to start." if dir_or_file.nil?
 
 if options[:war]
   options[:war] = dir_or_file
